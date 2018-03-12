@@ -39,31 +39,31 @@ if (isset($_POST['name'])) {
           <h2 class="text-center">Inscription participant</h2>
           <div class="well">
             <form class="form-horizontal" role="form" enctype="multipart/form-data" action="sign_up_user.php" method="post">
-              <input type="hidden" name="id" value="<?= $id ?>">
+<!--               <input type="hidden" name="id" value="<?= $id ?>"> -->
               <div class="form-group">
                 <label class="col-sm-4 control-label">Nom</label>
                 <div class="col-sm-3">
-                  <input type="text" name="name" value="<?= $name ?>" class="form-control" placeholder="Entrez votre nom" required autofocus>
+                  <input type="text" name="name" value="" class="form-control" placeholder="Entrez votre nom" required autofocus>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 control-label">Prénom</label>
                 <div class="col-sm-3">
-                  <input type='text' name="firstName" value ="<?= $firstName ?>" class="form-control" placeholder="Entrez votre prénom" required>
+                  <input type='text' name="firstName" value ="" class="form-control" placeholder="Entrez votre prénom" required>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 control-label">Date de naissance</label>
                 <div class="col-sm-1">
-                  <input type='number' name="dayBirth" value ="<?= $dayBirth ?>" class="form-control" placeholder="jj" required>
+                  <input type='number' name="dayBirth" value ="" class="form-control" placeholder="jj" required>
                 </div>
                 <label class="col-sm-1 control-label">/</label>
                 <div class="col-sm-1">
-                  <input type='number' name="monthBirth" value ="<?= $monthBirth ?>" class="form-control" placeholder="mm" required>
+                  <input type='number' name="monthBirth" value ="" class="form-control" placeholder="mm" required>
                 </div>
                 <label class="col-sm-1 control-label">/</label>
                 <div class="col-sm-2">
-                  <input type='number' name="yearBirth" value ="<?= $yearBirth ?>" class="form-control" placeholder="aaaa" required>
+                  <input type='number' name="yearBirth" value ="" class="form-control" placeholder="aaaa" required>
                 </div>
               </div>
               <div class="form-group">
@@ -95,6 +95,7 @@ if (isset($_POST['name'])) {
                   <option value="Employés">Employés</option>
                   <option value="Ouvriers">Ouvriers</option>
                   <option value="Retraités">Retraités</option>
+                  <option value="Autres personnes sans activité professionnelle">Autres personnes sans activité professionnelle</option>
                 </select>
                 </div>
               </div>
@@ -128,20 +129,23 @@ if (isset($_POST['name'])) {
               <div class="form-group">
                 <label class="col-sm-4 control-label">E-mail</label>
                 <div class="col-sm-4">
-                  <input type="text" name="mail" value="<?= $userMail ?>" class="form-control" placeholder="Entrez votre adresse mail" required autofocus>
+                  <input type="text" id = "mail" name="mail" value="" class="form-control" placeholder="Entrez votre adresse mail" required autofocus>
                 </div>
+                <span id="mailHelp" ></span>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 control-label">Mot de passe</label>
                 <div class="col-sm-3">
-                  <input type="text" name="password" value="<?= $userPassword ?>" class="form-control" placeholder="Entrez votre mot de passe" required autofocus>
+                  <input type="text" id = "password1" name="password" value="" class="form-control" placeholder="Entrez votre mot de passe" required autofocus>
                 </div>
+                <span id="password1Help" ></span>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 control-label">Confirmation du mot de passe</label>
                 <div class="col-sm-3">
-                  <input type="text" name="password" value="<?= $userPassword ?>" class="form-control" placeholder="Confirmez votre mot de passe" required autofocus>
+                  <input type="text" id = "password2" name="password" value="" class="form-control" placeholder="Confirmez votre mot de passe" required autofocus>
                 </div>
+                <span id="password2Help" ></span>
               </div>
               <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-4">
@@ -156,4 +160,64 @@ if (isset($_POST['name'])) {
       <?php require_once "includes/scripts.php"; ?>
     </body>
 
+    <script type="text/javascript">
+
+      // Check email validity when field loses focus
+      document.getElementById("mail").addEventListener("input", e => {
+        // Match a string of the form xxx@yyy.zzz
+        const emailRegex = /.+@.+\..+/;
+        let validityMessage = "";
+        if (!emailRegex.test(e.target.value)) {
+          validityMessage = "Invalid address";
+        }
+        document.getElementById("mailHelp").textContent = validityMessage;
+        document.getElementById("mailHelp").style.color = "#a94442";
+      });
+
+      // Check password validity when field loses focus
+      document.getElementById("password1").addEventListener("input", e => {
+        const password1 = e.target.value;
+        const passwordRegex = /[0-9]/;
+        let validityMessage = "";
+        if (!passwordRegex.test(password1) && password1.length < 6)
+          {
+            validityMessage = "Error: password must be at least 6 characters long and must contain at least one digit";
+          }
+        else
+          {
+            if (!passwordRegex.test(password1)) {
+              validityMessage = "Error: password must contain at least one digit";
+            }
+            else
+            {
+              if(password1.length < 6)
+                {
+                  validityMessage = "Error: password must be at least 6 characters long";
+                }
+            }
+          }
+        document.getElementById("password1Help").textContent = validityMessage;
+        document.getElementById("password1Help").style.color = "#a94442";
+        if(validityMessage !== "")
+          {
+            document.getElementById("submit").preventDefault();
+          }
+      });
+
+      document.getElementById("password2").addEventListener("input", e => {
+        const password2 = e.target.value;
+        const password1 = document.getElementById("password1").value;
+        let validityMessage = "";
+        if(password1 !== password2)
+          {
+            validityMessage = "Error: the two passwords inputted must be identical";
+          }
+        document.getElementById("password2Help").textContent = validityMessage;
+        document.getElementById("password2Help").style.color = "#a94442";
+        if(validityMessage !== "")
+          {
+            document.getElementById("submit").preventDefault();
+          }
+      });
+    </script>
   </html>
