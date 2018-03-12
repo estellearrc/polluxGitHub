@@ -1,0 +1,39 @@
+
+.header {
+    margin-bottom : -20px;
+}
+.banner {
+    margin-bottom : -20px;
+    width : 100% auto;
+    height: 50vh; /*viewport height*/
+    background-image: url(" ../images/accueil.jpg");
+    background-size: cover;
+    
+  }
+
+    .well{
+        margin : auto;
+        /* background-color:#FFFCFC; */
+        background-color: #B2B1C4;
+        border-radius:100px 100px;
+        border:1px solid #0A064D;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 30px
+    }
+
+    #text{
+        font-family: 'Lucida Sans';
+    }
+
+    .gap-left{
+        width : 160px;
+        height : 190px;
+        border-radius:50px 50px;
+    }    
+
+    body{
+        background-image: url("../images/fond2.png");
+        /* background-attachment: fixed; */
+    }
+
